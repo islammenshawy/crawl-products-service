@@ -17,7 +17,7 @@ app.post('/insert/products',function(request,response){
   console.log("Persisting new products to map for category" + key)
   result[key] = {}
   result[key]['timestamp'] = new Date();
-  result[key]['payload'] = request.body;
+  result[key]['payload'] = data;
   response.send("OK");
 });
 
