@@ -36,5 +36,9 @@ app.get('/products',function(request,response){
 });
 
 app.get('/',function(request,response){
-  response.send("Live, OK");
+  response.send("OK");
+});
+
+app.get('/health',function(request,response){
+  response.send("OK");
 });
