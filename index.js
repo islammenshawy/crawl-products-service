@@ -11,13 +11,23 @@ app.listen(3000,function(){
   console.log("Started on PORT 3000");
 })
 
-app.post('/test/control',function(request,response){
+app.post('/insert/products',function(request,response){
+  var key=request.body.category;
+  var data=request.body.payload;
+  console.log("Persisting new products to map for category" + key)
+  result[key] = {}
+  result[key]['timestamp'] = new Date();
+  result[key]['payload'] = request.body;
+  response.send("OK");
+});
+
+app.post('/insert/products/product',function(request,response){
   var command=request.body.command;
   var key=request.body.key;
   console.log("Persisting new products to map for key" + key)
   result['timestamp'] = new Date();
   result['result'] = request.body;
-  response.send("yes");
+  response.send("OK");
 });
 
 app.get('/products',function(request,response){
