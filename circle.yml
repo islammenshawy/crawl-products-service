@@ -10,10 +10,9 @@ test:
     - cf target -o proxy.gap.com -s development
     - cf set-env crawl-products-service NEW_RELIC_LICENSE_KEY $NEW_RELIC_LICENSE_KEY
     - cf set-env crawl-products-service NEW_RELIC_APP_NAME crawl-products-service
-    - cf push crawl-products-service -u process -t 180 --no-start
+    - cf push crawl-products-service -u process -t 180
     - cf set-health-check crawl-products-service process
     - cf set-health-check crawl-products-service  http --endpoint /health
     - cf create-service newrelic standard crawl-products-service-app
-    - cf start crawl-products-service
     - cf bind-service crawl-products-servicel rcrawl-products-service-app
     - cf restage crawl-products-service
