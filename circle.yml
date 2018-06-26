@@ -11,7 +11,8 @@ test:
     - cf set-env crawl-products-service NEW_RELIC_LICENSE_KEY $NEW_RELIC_LICENSE_KEY
     - cf set-env crawl-products-service NEW_RELIC_APP_NAME crawl-products-service
     - cf push crawl-products-service -u port 3000 -t 180
-    - cf set-health-check crawl-products-service port 3000 http --endpoint /health
+    - cf set-health-check crawl-products-service port 3000
+    - cf set-health-check crawl-products-service --endpoint /health
     - cf create-service newrelic standard crawl-products-service-app
     - cf bind-service crawl-products-servicel rcrawl-products-service-app
     - cf restage crawl-products-service
