@@ -4,11 +4,13 @@ dependencies:
     - sudo dpkg -i cf-cli_amd64.deb
     - cf -v
 test:
-  override:
-    - echo "test"
   post:
     - cf api  https://api.run.pivotal.io
     - cf auth $CF_USER_EMAIL $CF_PASSWORD
     - cf target -o proxy.gap.com -s development
-    - cf push
-    - cf restage crawl_products_service
+    - cf set-env rabbitmq-email NEW_RELIC_LICENSE_KEY $NEW_RELIC_LICENSE_KEY
+    - cf set-env rabbitmq-email NEW_RELIC_APP_NAME crawl-products-service
+    - cf push crawl-products-service
+    - cf create-service newrelic standard crawl-products-service-app
+    - cf bind-service crawl-products-servicel rcrawl-products-service-app
+    - cf restage crawl-products-service
