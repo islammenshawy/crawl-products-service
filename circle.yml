@@ -14,5 +14,5 @@ test:
     - cf set-health-check crawl-products-service  http --endpoint /health
     - cf create-service newrelic standard crawl-products-service-app
     - cf start crawl-products-service
-    - cf bind-service crawl-products-servicel rcrawl-products-service-app
+    - cf bind-service crawl-products-servicel crawl-products-service-app
     - cf restage crawl-products-service
