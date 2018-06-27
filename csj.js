@@ -101,7 +101,7 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
 }());
 
 function sendToProductsService(){
-    console.warn("Sending to product service")
+    console.log("Sending to product service")
     finalRequest = {
         category: gidLib.getQuerystringParam('cid'),
         payload: finalResultData
@@ -112,10 +112,12 @@ function sendToProductsService(){
     data: JSON.stringify(finalRequest),
     dataType: 'json',
     success: function(data){
-        console.warn("device control succeeded");
+        console.warn("sent products to service successfullly");
+        jQuery('.tabs--clear-all-button:visible').click();
     },
     error: function(){
-        console.warn("Device control failed");
+        console.warn("sending products to service failed");
+        jQuery('.tabs--clear-all-button:visible').click();
     },
     processData: false,
     type: 'POST',
