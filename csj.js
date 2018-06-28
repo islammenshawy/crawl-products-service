@@ -2,6 +2,7 @@
 categoryProducts = {};
 finalResultData = {};
 handledCats = {};
+clickPromises = [];
 jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
     function getCurrentFilterKey(styleKey){
         var filter_name = jQuery('.facet-checkbox--input').filter(function(){return this.value == styleKey}).siblings()[0].innerHTML.replace(/ /g,"_");
@@ -24,12 +25,20 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
         ps.subscribe('categoryData:ready', function(data){
             if(!handledCats[elm[0].value] ){
                 handledCats[elm[0].value] = elm[0].value;
-                var filterKey=getCurrentFilterKey(elm[0].value);
-                var mergedProduct = [].concat.apply([],(gap.viewModel.productCategory.k_products().map(a => a.products))).map(a => { a['category_filter'] = filterKey; return a;})
-                categoryProducts[filterKey] = mergedProduct;
-                console.log("Number of products is " + mergedProduct.length + ", for filter " + filterKey);
-                return resolve(elm);
-            }
+                if(jQuery('.accordion--content--inner:visible').length === 0){
+                    jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click();
+                }
+                optimizely.get('utils').waitUntil(function(){
+                    return listIsAvailable('.tabs--facets .tabs--facet-style input[class="facet-checkbox--input"]');
+                }).then(function(){
+                    loadClickPromises();
+                }).then(function(){
+                    var filterKey=getCurrentFilterKey(elm[0].value);
+                    var mergedProduct = [].concat.apply([],(gap.viewModel.productCategory.k_products().map(a => a.products))).map(a => { a['category_filter'] = filterKey; return a;})
+                    categoryProducts[filterKey] = mergedProduct;
+                    console.log("Number of products is " + mergedProduct.length + ", for filter " + filterKey);
+                    return resolve(elm);
+            })}
         })
         //resolve(parseEachProd(elm));
       });
@@ -45,13 +54,14 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
         ps.subscribe('categoryData:ready', function(data){
             return resolve(elm);
         })
+        setTimeout(function() {
+            return resolve(elm);
+        }, 6000);
       });
     }
     function f3(elm) {
       return new Promise((resolve, reject) => {
-        resolve(jQuery('.tabs--clear-all-button').click(function(){
-            console.log("clicking clear filter");
-        }));
+        resolve(jQuery('.tabs--clear-all-button:visible').click());
       });
     }
     function processProductsArray(products){
@@ -69,16 +79,16 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
         }
         next();
     }
-    function processArray(array, fn) {
+    function processArray(fn) {
         var index = 0;
         const promiseArr = [p1, p2, p3, p4, f3];
 
         function next() {
-            if (index < array.length) {
-                fn(promiseArr, array[index++]).then(next);
+            if (index < clickPromises.length) {
+                fn(promiseArr, clickPromises[index++]).then(next);
             }
             //Last filter then process the products
-            else if(index == array.length){
+            else if(index == clickPromises.length){
                 processProductsArray(categoryProducts);
             }
         }
@@ -87,14 +97,18 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
     function listIsAvailable(selector){
         return jQuery(selector).length > 0;
     }
-    var clickPromises = [];
+    function loadClickPromises(){
+        clickPromises = [];
+        jQuery('.tabs--facets .tabs--facet-style input[class="facet-checkbox--input"]').each(function(index,elm){
+            clickPromises.push(elm);
+        })
+    }
     optimizely.get('utils').waitUntil(function(){
         return listIsAvailable('.tabs--facets .tabs--facet-style input[class="facet-checkbox--input"]');
     }).then(function(){
-        jQuery('.tabs--facets .tabs--facet-style input[class="facet-checkbox--input"]').each(function(index,elm){
-            clickPromises.push(elm);
-        })}).then(function(){
-        processArray(clickPromises, runPromiseInSequence)
+        loadClickPromises();
+        }).then(function(){
+        processArray(runPromiseInSequence)
     }).then(function(){
         console.log("Done processing category products");
     });
