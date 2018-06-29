@@ -6,7 +6,7 @@ var THIRTY_MINUTES = 30 * 60 * 1000; /* ms */
 var pubsub         =       require("pubsub-js");
 var mkdirp = require('mkdirp');
 var fs = require('fs');
-var path = __dirname + "/build/"
+var path = __dirname + "/build/static/"
 
 
 //Here we are configuring express to use body-parser as middle-ware.
