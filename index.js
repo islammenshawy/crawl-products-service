@@ -43,7 +43,8 @@ app.post('/insert/products/product',function(request,response){
 function writeCategoryJson(category){
   mkdirp(path, function (err) {
     if (err) return cb(err);
-    fs.writeFile(path + category + '.json', JSON.stringify(result[category]['payload']),'utf8', function(){
+    var fileData = "var data = " + JSON.stringify(result[category]['payload']);
+    fs.writeFile(path + category + '.js', fileData,'utf8', function(){
     console.warn("persisting category [" + category + "] to /build directory");
   });
 })
