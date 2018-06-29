@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "start": "node index.js"
+    "start": "node minify.js && node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +14,11 @@
     "assert": "^1.4.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "newrelic": "^4.2.0"
+    "fs": "0.0.1-security",
+    "mkdirp": "^0.5.1",
+    "newrelic": "^4.2.0",
+    "node-minify": "^3.1.0",
+    "pubsub-js": "^1.6.0"
   },
   "engines": {
     "node": "8.11.3",

@@ -16,13 +16,23 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
     }
     function p1(elm) {
        return new Promise((resolve, reject) => {
-        resolve(jQuery(elm).click());
+           if(jQuery('.accordion--content--inner:visible').length === 0){
+                    jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click();
+            }
+            optimizely.get('utils').waitUntil(function(){
+                    return listIsAvailable('.tabs--facets .tabs--facet-style input[class="facet-checkbox--input"]');
+                }).then(function(){
+                    loadClickPromises();
+                }).then(function() {
+                    return resolve(jQuery(elm).click());
+           });
+        
       });
     }
     function p2(elm) {
       return new Promise((resolve, reject) => {
         //resolve(jQuery(elm));
-        ps.subscribe('categoryData:ready', function(data){
+        setTimeout(function(data){
             if(!handledCats[elm[0].value] ){
                 handledCats[elm[0].value] = elm[0].value;
                 if(jQuery('.accordion--content--inner:visible').length === 0){
@@ -39,29 +49,28 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
                     console.log("Number of products is " + mergedProduct.length + ", for filter " + filterKey);
                     return resolve(elm);
             })}
-        })
-        //resolve(parseEachProd(elm));
+        }, 8000)
       });
     }
     function p3(elm) {
       return new Promise((resolve, reject) => {
-        resolve(jQuery(elm).click());
+         return resolve(jQuery(elm).click());
       });
     }
     function p4(elm) {
       return new Promise((resolve, reject) => {
         //resolve(jQuery(elm));
-        ps.subscribe('categoryData:ready', function(data){
-            return resolve(elm);
-        })
+        // ps.subscribe('categoryData:ready', function(data){
+        //     return resolve(elm);
+        // })
         setTimeout(function() {
             return resolve(elm);
-        }, 6000);
+        }, 5000);
       });
     }
     function f3(elm) {
       return new Promise((resolve, reject) => {
-        resolve(jQuery('.tabs--clear-all-button:visible').click());
+        resolve(jQuery('.tabs--clear-all-button').click());
       });
     }
     function processProductsArray(products){
@@ -296,7 +305,6 @@ function callProdtagAPI(elm,tempcolor,productStyleVariantList){
 } 
 // call productstyle api
 function callProdStyleAPI(elm){
-    console.log('PS:  '+elm);
     console.log('inside ps api:'+ elm.businessCatalogItemId);
     var prodId = elm.businessCatalogItemId;
     return jQuery.ajax({

@@ -1,0 +1,1 @@
+$(function(){$("#contact-form").validator(),$("#start_listener").on("click",function(e){var t=getSelectedQueue();$.ajax({type:"GET",url:"startlistener",data:{queue:t},success:function(e){alertSucessMessage("Listner Started successfully")},error:function(e){alertFailure()}})})});
