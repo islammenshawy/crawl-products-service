@@ -295,7 +295,7 @@ function callProdtagAPI(elm,tempcolor,productStyleVariantList){
             updateRiseArr(res,childProductDetail);
             updateColorArr(tempcolor,childProductDetail);
             updateSizeArr(productStyleVariantList,childProductDetail);
-            updateCategoryArr(elm.category_filter, childProductDetail);
+            //updateCategoryArr(elm.category_filter, childProductDetail);
         }
     }).done(function(ajaxRes){
         var response = ajaxRes;
