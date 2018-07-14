@@ -77,12 +77,12 @@ app.get('/categories',function(request,response){
 });
 
 app.get('/category/:cid',function(request,response){
-  var category = req.params.cid;
+  var category = request.params.cid;
   response.send(result[category]['payload'])
 });
 
 app.get('/category/:cid/products',function(request,response){
-  var category = req.params.cid;
+  var category = request.params.cid;
   response.send(result[category]['products'])
 });
 
