@@ -184,16 +184,14 @@ function updateJeanStyleArr(result,childProductDetail){
     jeanStyledata = jsonObjectToArray(jeanStyledata);
     if(jeanStyledata.length > 0 ){
         for(var x=0; x<jeanStyledata.length ;x++){
-            if(jeanStyledata[x].value == 'Jegging' || jeanStyledata[x].value == 'Skinny' || jeanStyledata[x].value == 'Straight' || jeanStyledata[x].value == 'Girlfriend' || jeanStyledata[x].value == 'Bootcut'){
-                var tmp = 'cat_facet_style_'+jeanStyledata[x].value;
-                if(typeof finalResultData[tmp] === 'undefined'){
-                    finalResultData[tmp] = {};
-                }
-                var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
-                if(flag === false ){
-                    finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
-                    productsData[childProductDetail.prodId] = childProductDetail;
-                }
+            var tmp = 'cat_facet_style_'+jeanStyledata[x].value;
+            if(typeof finalResultData[tmp] === 'undefined'){
+                finalResultData[tmp] = {};
+            } 
+            var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
+            if(flag === false ){
+                finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+                productsData[childProductDetail.prodId] = childProductDetail;
             }
         }
     }
@@ -204,17 +202,16 @@ function updateRiseArr(result,childProductDetail){
     risedata = jsonObjectToArray(risedata);
     if(risedata.length > 0 ){
         for(var x=0; x<risedata.length ;x++){
-            if(risedata[x].value == 'High rise' || risedata[x].value == 'Low rise' || risedata[x].value == 'Mid rise'){
-                var tmp = 'cat_facet_rise_'+risedata[x].value;
-                tmp = tmp.replace(' ','_');
-                if(typeof finalResultData[tmp] === 'undefined'){
-                    finalResultData[tmp] = {};
-                }
-                var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
-                if(flag === false ){
-                    finalResultData[tmp][childProductDetail.prodId] = childProductDetail;
-                }
-            }   
+            var tmp = 'cat_facet_rise_'+risedata[x].value;
+            tmp = tmp.replace(' ','_');
+            if(typeof finalResultData[tmp] === 'undefined'){
+                finalResultData[tmp] = {};
+            } 
+            var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
+            if(flag === false ){
+                finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+                productsData[childProductDetail.prodId] = childProductDetail;
+            }
         }
     }
 }
@@ -230,12 +227,12 @@ function updateColorArr(result,childProductDetail){
         var tmp = 'cat_facet_wash_'+rawCol;
         if(typeof finalResultData[tmp] === 'undefined'){
             finalResultData[tmp] = {};
-        }
+        } 
         var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
         if(flag === false ){
             finalResultData[tmp][childProductDetail.prodId] = childProductDetail;
         }
-    }   
+    }    
 }
 
 //Update category filter
