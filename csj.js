@@ -1,6 +1,7 @@
 // Here You can type your custom JavaScript...
 categoryProducts = {};
 finalResultData = {};
+productsData ={};
 handledCats = {};
 clickPromises = [];
 jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
@@ -127,7 +128,8 @@ function sendToProductsService(){
     console.log("Sending to product service")
     finalRequest = {
         category: gidLib.getQuerystringParam('cid'),
-        payload: finalResultData
+        payload: finalResultData,
+        products: productsData
     }
 
     jQuery.ajax({
@@ -188,8 +190,9 @@ function updateJeanStyleArr(result,childProductDetail){
             } 
             var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
             if(flag === false ){
-                finalResultData[tmp][childProductDetail.prodId] = childProductDetail;
-            } 
+                finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+                productsData[childProductDetail.prodId] = childProductDetail;
+            }
         }
     }
 }
@@ -206,7 +209,8 @@ function updateRiseArr(result,childProductDetail){
             } 
             var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
             if(flag === false ){
-                finalResultData[tmp][childProductDetail.prodId] = childProductDetail;
+                finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+                productsData[childProductDetail.prodId] = childProductDetail;
             }
         }
     }
@@ -217,6 +221,9 @@ function updateColorArr(result,childProductDetail){
     if(rawCol !== undefined && rawCol !== '' && rawCol.indexOf(')') > -1){
         rawCol = rawCol.split(')')[0];
         rawCol = rawCol.split('(')[1];
+        rawCol = rawCol.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+            return letter.toUpperCase();
+        });
         var tmp = 'cat_facet_wash_'+rawCol;
         if(typeof finalResultData[tmp] === 'undefined'){
             finalResultData[tmp] = {};
