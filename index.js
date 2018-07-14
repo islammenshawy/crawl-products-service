@@ -24,10 +24,12 @@ app.listen(8080,function(){
 app.post('/insert/products',function(request,response){
   var key=request.body.category;
   var data=request.body.payload;
+  var products=request.body.products;
   console.log("Persisting new products to map for category" + key)
   result[key] = {}
   result[key]['timestamp'] = new Date();
   result[key]['payload'] = data;
+  result[key]['products'] = products;
   response.send("OK");
 });
 
@@ -70,9 +72,20 @@ app.get('/categories/health',function(request,response){
   response.send("OK");
 });
 
-app.get('/products',function(request,response){
+app.get('/categories',function(request,response){
  response.send(result);
 });
+
+app.get('/category/:cid',function(request,response){
+  var category = req.params.cid;
+  response.send(result[category]['payload'])
+});
+
+app.get('/category/:cid/products',function(request,response){
+  var category = req.params.cid;
+  response.send(result[category]['products'])
+});
+
 
 //Express routes
 app.get('/', function(req, res){

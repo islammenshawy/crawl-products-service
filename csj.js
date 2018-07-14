@@ -1,6 +1,7 @@
 // Here You can type your custom JavaScript...
 categoryProducts = {};
 finalResultData = {};
+productsData ={};
 handledCats = {};
 clickPromises = [];
 jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
@@ -127,7 +128,8 @@ function sendToProductsService(){
     console.log("Sending to product service")
     finalRequest = {
         category: gidLib.getQuerystringParam('cid'),
-        payload: finalResultData
+        payload: finalResultData,
+        products: productsData
     }
 
     jQuery.ajax({
@@ -189,7 +191,8 @@ function updateJeanStyleArr(result,childProductDetail){
                 }
                 var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
                 if(flag === false ){
-                    finalResultData[tmp][childProductDetail.prodId] = childProductDetail;
+                    finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+                    productsData[childProductDetail.prodId] = childProductDetail;
                 }
             }
         }
