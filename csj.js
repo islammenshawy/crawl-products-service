@@ -256,9 +256,9 @@ function updateSizeUserName(variantName,sizeOptName,childProductDetail){
     if(typeof finalResultData[temp] === 'undefined'){
         finalResultData[temp] = {};
     }
-    var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
+    var flag = containsItem(finalResultData[temp],childProductDetail.prodId);
     if(flag === false ){
-        finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+        finalResultData[temp][childProductDetail.prodId] = childProductDetail.prodId;
         productsData[childProductDetail.prodId] = childProductDetail;
     }  
 }
