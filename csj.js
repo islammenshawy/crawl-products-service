@@ -227,10 +227,11 @@ function updateColorArr(result,childProductDetail){
         var tmp = 'cat_facet_wash_'+rawCol;
         if(typeof finalResultData[tmp] === 'undefined'){
             finalResultData[tmp] = {};
-        } 
+        }
         var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
         if(flag === false ){
-            finalResultData[tmp][childProductDetail.prodId] = childProductDetail;
+            finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+            productsData[childProductDetail.prodId] = childProductDetail;
         }
     }    
 }
@@ -241,10 +242,11 @@ function updateCategoryArr(categoryFilter, childProductDetail){
         var tmp = categoryFilter;
         if(typeof finalResultData[tmp] === 'undefined'){
             finalResultData[tmp] = {};
-        } 
+        }
         var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
         if(flag === false ){
-            finalResultData[tmp][childProductDetail.prodId] = childProductDetail;
+            finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+            productsData[childProductDetail.prodId] = childProductDetail;
         }
     }    
 }
@@ -253,11 +255,12 @@ function updateSizeUserName(variantName,sizeOptName,childProductDetail){
     var temp = 'cat_facet_'+variantName+'_'+sizeOptName;
     if(typeof finalResultData[temp] === 'undefined'){
         finalResultData[temp] = {};
-    } 
-    var flag = containsItem(finalResultData[temp],childProductDetail.prodId);
+    }
+    var flag = containsItem(finalResultData[tmp],childProductDetail.prodId);
     if(flag === false ){
-        finalResultData[temp][childProductDetail.prodId] = childProductDetail;
-    }   
+        finalResultData[tmp][childProductDetail.prodId] = childProductDetail.prodId;
+        productsData[childProductDetail.prodId] = childProductDetail;
+    }  
 }
 
 // for color filter value
