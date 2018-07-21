@@ -18,7 +18,8 @@
     "mkdirp": "^0.5.1",
     "newrelic": "^4.2.0",
     "node-minify": "^3.1.0",
-    "pubsub-js": "^1.6.0"
+    "pubsub-js": "^1.6.0",
+    "redis": "^2.8.0"
   },
   "engines": {
     "node": "8.11.3",

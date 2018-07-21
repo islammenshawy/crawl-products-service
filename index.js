@@ -8,6 +8,14 @@ var mkdirp = require('mkdirp');
 var fs = require('fs');
 var path = __dirname + "/build/static/"
 
+//Redis configurations
+var vcap_services = process.env.VCAP_SERVICES;
+var rediscloud_service = JSON.parse(vcap_services)["rediscloud"][0]
+var credentials = rediscloud_service.credentials;
+var redis = require('redis');
+var client = redis.createClient(credentials.port, credentials.hostname, {no_ready_check: true});
+client.auth(credentials.password);
+
 
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));

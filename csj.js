@@ -69,6 +69,21 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
         }, 5000);
       });
     }
+    function loadAllCategoryProducts(){
+        setTimeout(function() {
+            categoryProducts = (gap.viewModel.productCategory.k_products().map(a => {
+                var elem = {};
+            var filterName = "cat_facet_catg_" + a.name.trim().replace(' ', '_');
+            elem.filter = filterName;
+            elem.products = a.products;
+            return elem;
+        })).reduce(function(map, obj) {
+                map[obj.filter] = obj.products;
+                return map;
+            }, {});
+        processProductsArray(categoryProducts);
+        }, 5000);
+    }
     function f3(elm) {
       return new Promise((resolve, reject) => {
         resolve(jQuery('.tabs--clear-all-button').click());
@@ -93,16 +108,17 @@ jQuery('.tabs--object-facet-style .tabs--trigger-contents')[0].click(function(){
         var index = 0;
         const promiseArr = [p1, p2, p3, p4, f3];
 
-        function next() {
-            if (index < clickPromises.length) {
-                fn(promiseArr, clickPromises[index++]).then(next);
-            }
-            //Last filter then process the products
-            else if(index == clickPromises.length){
-                processProductsArray(categoryProducts);
-            }
-        }
-        next();
+        // function next() {
+        //     if (index < clickPromises.length) {
+        //         fn(promiseArr, clickPromises[index++]).then(next);
+        //     }
+        //     //Last filter then process the products
+        //     else if(index == clickPromises.length){
+        //         processProductsArray(categoryProducts);
+        //     }
+        // }
+        loadAllCategoryProducts();
+        //next();
     }
     function listIsAvailable(selector){
         return jQuery(selector).length > 0;
