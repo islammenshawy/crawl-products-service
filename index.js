@@ -38,6 +38,7 @@ app.post('/insert/products',function(request,response){
   result[key]['timestamp'] = new Date();
   result[key]['payload'] = data;
   result[key]['products'] = products;
+  client.set(key, result[key]);
   response.send("OK");
 });
 
@@ -66,11 +67,27 @@ var async_function = function(val, callback){
     });
 };
 
+function getCachedCategory(cid){
+  var category = client.get(cid, function (err, reply) {
+    console.log(reply.toString()); // Will print `bar`
+    if(err){
+      console.log("Error retrieving category from cache for category id" + cid);
+      return result[category];
+    }
+  });
+  return category;
+}
+
+function errorCategoryDoesntExist(response){
+  return response.status(400).send({ message: 'This category doesnt exist!'});
+}
+
 app.get('/categories/health',function(request,response){
   var category = request.query.cid;
-  var update_date = result[category] ? result[category]['timestamp'] : undefined;
+  var resultCategory = getCachedCategory(category);
+  var update_date = resultCategory ? resultCategory['timestamp'] : undefined;
   if (update_date === undefined){
-    return response.status(400).send({ message: 'This category doesnt exist!'});
+    return errorCategoryDoesntExist(response);
   }
   else if(((new Date) - update_date) > THIRTY_MINUTES){
     return response.status(400).send({ message: 'This category hasnt been updated in last thirty minutes!'});
@@ -85,13 +102,25 @@ app.get('/categories',function(request,response){
 });
 
 app.get('/category/:cid',function(request,response){
-  var category = request.params.cid;
-  response.send(result[category]['payload'])
+  var categoryId = request.params.cid;
+  var resultCategory = getCachedCategory(categoryId);
+  if(resultCategory){
+      response.send(resultCategory['payload'])
+  }
+  else{
+    errorCategoryDoesntExist(response)
+  }
 });
 
 app.get('/category/:cid/products',function(request,response){
-  var category = request.params.cid;
-  response.send(result[category]['products'])
+  var categoryId = request.params.cid;
+  var resultCategory = getCachedCategory(categoryId);
+  if(resultCategory){
+      response.send(resultCategory['products'])
+  }
+  else{
+    errorCategoryDoesntExist(response)
+  }
 });
 
 

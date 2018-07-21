@@ -12,7 +12,7 @@ test:
     - cf set-env crawl-products-service NEW_RELIC_APP_NAME crawl-products-service
     - cf push crawl-products-service -u port 3000 -t 180 --no-start
     - cf set-health-check crawl-products-service  http --endpoint /health
-    - cf create-service newrelic standard crawl-products-service-app
+    #- cf create-service newrelic standard crawl-products-service-app
     - cf create-service rediscloud 30mb crawl-products-service-redis
     - cf start crawl-products-service
     - cf bind-service crawl-products-service crawl-products-service-app
