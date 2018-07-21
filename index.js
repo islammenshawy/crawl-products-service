@@ -38,7 +38,7 @@ app.post('/insert/products',function(request,response){
   result[key]['timestamp'] = new Date();
   result[key]['payload'] = data;
   result[key]['products'] = products;
-  client.set(key, result[key]);
+  client.set(key, JSON.stringify(result[key]);
   response.send("OK");
 });
 
@@ -68,14 +68,16 @@ var async_function = function(val, callback){
 };
 
 function getCachedCategory(cid){
-  var category = client.get(cid, function (err, reply) {
-    console.log(reply.toString()); // Will print `bar`
+  client.get(cid, function (err, reply) {
+    //console.log(reply.toString()); // Will print `bar`
     if(err){
       console.log("Error retrieving category from cache for category id" + cid);
       return result[category];
+    }else{
+      console.log("Reply returned from Redis for cid" + cid);
+      return JSON.parse(reply.toString());
     }
   });
-  return category;
 }
 
 function errorCategoryDoesntExist(response){
