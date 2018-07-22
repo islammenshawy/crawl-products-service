@@ -74,7 +74,7 @@ function getCachedCategory(cid){
       console.log("Error retrieving category from cache for category id" + cid);
       return result[category];
     }else{
-      console.log("Reply returned from Redis for cid" + cid);
+      console.log("Reply returned from Redis for cid " + cid + "with products" + reply.toString());
       return JSON.parse(reply.toString());
     }
   });
