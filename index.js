@@ -38,7 +38,7 @@ app.post('/insert/products',function(request,response){
   result[key]['timestamp'] = new Date();
   result[key]['payload'] = data;
   result[key]['products'] = products;
-  client.set(key, JSON.stringify(result[key]);
+  client.set(key, JSON.stringify(result[key]));
   response.send("OK");
 });
 
