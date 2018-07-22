@@ -70,8 +70,7 @@ var async_function = function(val, callback){
 var getCachedCategory = function(cid){
   return new Promise(function(resolve, reject) {
     client.get(cid, function (err, reply) {
-      //console.log(reply.toString()); // Will print `bar`
-      if(err){
+      if(err || !reply){
         console.log("Error retrieving category from cache and will use live memory for category id " + cid);
         resolve(result[category]);
       }else{
