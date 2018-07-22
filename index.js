@@ -67,18 +67,20 @@ var async_function = function(val, callback){
     });
 };
 
-function getCachedCategory(cid){
-  client.get(cid, function (err, reply) {
-    //console.log(reply.toString()); // Will print `bar`
-    if(err){
-      console.log("Error retrieving category from cache for category id" + cid);
-      return result[category];
-    }else{
-      console.log("Reply returned from Redis for cid " + cid + "with products" + reply.toString());
-      return JSON.parse(reply.toString());
-    }
-  });
-}
+var getCachedCategory = function(cid){
+  return new Promise(function(resolve, reject) {
+    client.get(cid, function (err, reply) {
+      //console.log(reply.toString()); // Will print `bar`
+      if(err){
+        console.log("Error retrieving category from cache for category id" + cid);
+        resolve(result[category]);
+      }else{
+        console.log("Reply returned from Redis for cid " + cid + "with products" + reply.toString());
+        resolve(JSON.parse(reply.toString()));
+      }
+    })
+  })
+};
 
 function errorCategoryDoesntExist(response){
   return response.status(400).send({ message: 'This category doesnt exist!'});
@@ -105,24 +107,26 @@ app.get('/categories',function(request,response){
 
 app.get('/category/:cid',function(request,response){
   var categoryId = request.params.cid;
-  var resultCategory = getCachedCategory(categoryId);
-  if(resultCategory){
+  getCachedCategory(categoryId).then(resultCategory => {
+    if (resultCategory) {
       response.send(resultCategory['payload'])
-  }
-  else{
-    errorCategoryDoesntExist(response)
-  }
+    }
+    else {
+      errorCategoryDoesntExist(response)
+    }
+  });
 });
 
 app.get('/category/:cid/products',function(request,response){
   var categoryId = request.params.cid;
-  var resultCategory = getCachedCategory(categoryId);
-  if(resultCategory){
+  getCachedCategory(categoryId).then(resultCategory => {
+    if (resultCategory) {
       response.send(resultCategory['products'])
-  }
-  else{
-    errorCategoryDoesntExist(response)
-  }
+    }
+    else {
+      errorCategoryDoesntExist(response)
+    }
+  });
 });
 
 
