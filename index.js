@@ -74,7 +74,7 @@ var getCachedCategory = function(cid){
     client.get(cid, function (err, reply) {
       if(err || !reply){
         console.log("Error retrieving category from cache and will use live memory for category id " + cid);
-        resolve(result[category]);
+        resolve(result[cid]);
       }else{
         console.log("Reply returned from Redis for cid " + cid);
         resolve(JSON.parse(reply.toString()));
