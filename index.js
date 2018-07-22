@@ -3,6 +3,7 @@ var bodyParser     =        require("body-parser");
 var app            =        express();
 var result         =       {};
 var THIRTY_MINUTES = 30 * 60 * 1000; /* ms */
+var CACHE_TIMEOUT  = THIRTY_MINUTES;
 var pubsub         =       require("pubsub-js");
 var mkdirp = require('mkdirp');
 var fs = require('fs');
@@ -38,7 +39,7 @@ app.post('/insert/products',function(request,response){
   result[key]['timestamp'] = new Date();
   result[key]['payload'] = data;
   result[key]['products'] = products;
-  client.set(key, JSON.stringify(result[key]));
+  client.set(key, JSON.stringify(result[key]), 'PX', CACHE_TIMEOUT);
   response.send("OK");
 });
 
