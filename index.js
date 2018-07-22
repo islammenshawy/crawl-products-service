@@ -87,7 +87,7 @@ function errorCategoryDoesntExist(response){
 }
 
 app.get('/categories/health',function(request,response){
-  var category = request.query.cid;
+  var categoryId = request.query.cid;
   getCachedCategory(categoryId).then(resultCategory => {
     var update_date = resultCategory ? resultCategory['timestamp'] : undefined;
     if (update_date === undefined) {
@@ -96,7 +96,7 @@ app.get('/categories/health',function(request,response){
     else if (((new Date) - update_date) > THIRTY_MINUTES) {
       return response.status(400).send({message: 'This category hasnt been updated in last thirty minutes!'});
     }
-    async_function(category, writeCategoryJson);
+    async_function(categoryId, writeCategoryJson);
     console.warn("Healthy service");
     response.send("OK");
   });
