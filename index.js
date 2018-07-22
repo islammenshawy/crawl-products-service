@@ -51,12 +51,14 @@ app.post('/insert/products/product',function(request,response){
   response.send("OK");
 });
 
-function writeCategoryJson(category){
+function writeCategoryJson(categoryId){
   mkdirp(path, function (err) {
     if (err) return cb(err);
-    var fileData = "var data = " + JSON.stringify(result[category]['payload']);
-    fs.writeFile(path + category + '.js', fileData,'utf8', function(){
-    console.warn("persisting category [" + category + "] to /build directory");
+    getCachedCategory(categoryId).then(category => {
+      var fileData = "var data = " + JSON.stringify(category['payload']);
+      fs.writeFile(path + categoryId + '.js', fileData,'utf8', function() {
+      console.warn("persisting category [" + categoryId + "] to /build directory");
+    });
   });
 })
 };
